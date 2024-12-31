@@ -6,25 +6,25 @@ import helmet from "helmet";
 import compression from "compression";
 import rateLimit from "express-rate-limit";
 import morgan from "morgan";
-import path from "path";
-import { fileURLToPath } from "url"; // For resolving paths
+// import path from "path";
+// import { fileURLToPath } from "url"; // For resolving paths
 import { connectDB } from "./db/index.js";
-import next from "next";
+// import next from "next";
 
 // Load environment variables
 dotenv.config({ path: "./.env" }); // Ensure `.env` is in the root directory
 
 // Setup path resolution for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5050;
 
 // Initialize Next.js app
-const dev = process.env.NODE_ENV !== "production";
-const nextApp = next({ dev, dir: path.join(__dirname, "../../frontend") }); // Ensure the correct path for frontend
-const nextHandler = nextApp.getRequestHandler();
+// const dev = process.env.NODE_ENV !== "production";
+// const nextApp = next({ dev, dir: path.join(__dirname, "../../frontend") }); // Ensure the correct path for frontend
+// const nextHandler = nextApp.getRequestHandler();
 
 const allowedOrigins = [
       "http://localhost:3000", // Frontend origin
@@ -93,9 +93,9 @@ const startServer = async () => {
             console.log("MongoDB connected successfully.");
 
             // Prepare Next.js app
-            console.log("Preparing Next.js...");
-            await nextApp.prepare();
-            console.log("Next.js prepared successfully.");
+            // console.log("Preparing Next.js...");
+            // await nextApp.prepare();
+            // console.log("Next.js prepared successfully.");
 
             // Serve static files if necessary (adjust path if needed)
             // app.use('/static', express.static(path.join(__dirname, "public"))); 
