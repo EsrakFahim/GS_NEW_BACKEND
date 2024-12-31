@@ -27,7 +27,8 @@ const PORT = process.env.PORT || 5050;
 // const nextHandler = nextApp.getRequestHandler();
 
 const allowedOrigins = [
-      "http://localhost:3000", // Frontend origin
+      "http://localhost:3000", // Frontend 
+      "https://gs-new-frontend.onrender.com", // Render frontend
 ];
 
 const corsOptions = {
