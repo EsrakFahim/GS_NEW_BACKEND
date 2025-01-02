@@ -29,6 +29,7 @@ const PORT = process.env.PORT || 5050;
 const allowedOrigins = [
       "http://localhost:3000", // Frontend 
       "https://gs-new-frontend.onrender.com", // Render frontend
+      "https://galaxyspark.agency", // Production frontend
 ];
 
 const corsOptions = {
