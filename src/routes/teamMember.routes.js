@@ -18,7 +18,7 @@ router.route("/add").post(
       addTeamMember
 );
 
-router.route("/update").put(
+router.route("/update/:id").put(
       upload.fields([
             {
                   name: "avatar",

@@ -5,13 +5,15 @@ import { TeamMember } from "../../models/TeamMember/TeamMember.model.js";
 import { uploadFileCloudinary } from "../../FileHandler/Upload.js";
 
 const editMemberProfile = asyncHandler(async (req, res) => {
-      const { _id } = req.params;
+      const { id } = req.params.id;
       const { fullName, jobTitle, bio, description, socialLinks, experience } =
             req.body;
       const { avatar } = req.files;
 
+      console.log(id)
+
       try {
-            if (!_id) {
+            if (!id) {
                   throw new apiErrorHandler(
                         res,
                         400,
@@ -19,7 +21,7 @@ const editMemberProfile = asyncHandler(async (req, res) => {
                   );
             }
 
-            const existingTeamMember = await TeamMember.findById(_id);
+            const existingTeamMember = await TeamMember.findById(id);
 
             if (!existingTeamMember) {
                   throw new apiErrorHandler(res, 404, "Team member not found");
@@ -42,7 +44,7 @@ const editMemberProfile = asyncHandler(async (req, res) => {
             }
 
             const updatedTeamMember = await TeamMember.findByIdAndUpdate(
-                  _id,
+                  id,
                   {
                         $set: updates,
                   },
