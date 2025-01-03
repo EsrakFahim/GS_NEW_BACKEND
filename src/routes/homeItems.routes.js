@@ -19,7 +19,7 @@ router.route("/").post(
       ]),
       addHomeItems
 );
-router.route("/").put(
+router.route("/update").put(
       upload.fields([
             {
                   name: "bannerImage",

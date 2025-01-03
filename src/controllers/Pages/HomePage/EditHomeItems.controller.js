@@ -7,7 +7,6 @@ import { uploadFileCloudinary } from "../../../FileHandler/Upload.js";
 // Controller to edit an existing home page entry
 const editHomeItems = asyncHandler(async (req, res) => {
       const { title, subTitle, videoText, callToAction, isActive } = req.body;
-      const { bannerImage, video } = req.files;
 
       try {
             // Find the existing home page entry
@@ -29,7 +28,9 @@ const editHomeItems = asyncHandler(async (req, res) => {
             };
 
             // Process and update bannerImage if provided
-            if (bannerImage) {
+            if ( req?.files?.bannerImage) {
+                  const { bannerImage } = req.files;
+
                   const uploadedBannerImage = await uploadFileCloudinary(
                         bannerImage[0].path
                   );
@@ -45,7 +46,9 @@ const editHomeItems = asyncHandler(async (req, res) => {
             }
 
             // Process and update video if provided
-            if (video) {
+            if  (req?.files?.video) {
+                  const { video } = req.files;
+
                   const uploadedVideo = await uploadFileCloudinary(
                         video[0].path
                   );
