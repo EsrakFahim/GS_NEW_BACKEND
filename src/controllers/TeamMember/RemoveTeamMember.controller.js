@@ -4,14 +4,15 @@ import { apiErrorHandler } from "../../utils/apiErrorHandler.js";
 import { TeamMember } from "../../models/TeamMember/TeamMember.model.js";
 
 const removeTeamMember = asyncHandler(async (req, res) => {
-      const { _id } = req.params;
+      const { id } = req.params;
 
-      if (!_id) {
+      if (!id) {
             throw new apiErrorHandler(res, 400, "Team member ID is required");
       }
 
+
       try {
-            const existingTeamMember = await TeamMember.findById(_id);
+            const existingTeamMember = await TeamMember.findById(id);
 
             if (!existingTeamMember) {
                   throw new apiErrorHandler(
@@ -21,7 +22,7 @@ const removeTeamMember = asyncHandler(async (req, res) => {
                   );
             }
 
-            const deletedTeamMember = await TeamMember.findByIdAndDelete(_id);
+            const deletedTeamMember = await TeamMember.findByIdAndDelete(id);
 
             if (!deletedTeamMember) {
                   throw new apiErrorHandler(

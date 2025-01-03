@@ -28,7 +28,7 @@ router.route("/update").put(
       editMemberProfile
 );
 
-router.route("/delete").delete(removeTeamMember);
+router.route("/delete/:id").delete(removeTeamMember);
 router.route("/").get(getAllTeamMember);
 router.route("/:id").get(getSingleTeamMember);
 
