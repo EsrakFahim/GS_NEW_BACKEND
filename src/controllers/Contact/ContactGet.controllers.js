@@ -18,8 +18,8 @@ const getContact = asyncHandler(async (req, res, next) => {
                   .json(
                         new apiResponse(
                               200,
+                              contact,
                               "Contact retrieved successfully",
-                              contact
                         )
                   );
       } catch (error) {

@@ -74,6 +74,7 @@ import pricePlanRoute from "./routes/pricePlan.routes.js";
 import agencyStatsRoute from "./routes/agencyStats.routes.js";
 import homePageRoute from "./routes/homeItems.routes.js";
 import aboutPageRoute from "./routes/aboutItems.routes.js";
+import mediaRoute from "./routes/media.routes.js";
 
 // API Routes setup
 app.use("/api/v1/client", clientRouter);
@@ -85,6 +86,7 @@ app.use("/api/v1/price-plan", pricePlanRoute);
 app.use("/api/v1/agency-stats", agencyStatsRoute);
 app.use("/api/v1/home-page", homePageRoute);
 app.use("/api/v1/about-page", aboutPageRoute);
+app.use("/api/v1/media", mediaRoute)
 
 // Start the server
 const startServer = async () => {

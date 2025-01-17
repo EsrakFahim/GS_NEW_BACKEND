@@ -10,7 +10,7 @@ const FileSchema = new Schema(
             },
             name: {
                   type: String,
-                  required: [true, "File name is required"],
+                  // required: [true, "File name is required"],
                   trim: true,
                   maxlength: 100,
             },

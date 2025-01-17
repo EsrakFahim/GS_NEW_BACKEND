@@ -22,10 +22,10 @@ const aboutSchema = new Schema(
                               imageUrl: {
                                     type: String,
                                     required: true,
-                                    match: [
-                                          /^https?:\/\/[^\s]+$/,
-                                          "Invalid URL format for image",
-                                    ],
+                                    // match: [
+                                    //       /^https?:\/\/[^\s]+$/,
+                                    //       "Invalid URL format for image",
+                                    // ],
                               },
                               altText: {
                                     type: String,
@@ -42,7 +42,7 @@ const aboutSchema = new Schema(
                         message: "At least 3 images are required.",
                   },
             },
-            whyWeTitle: { 
+            whyWeTitle: {
                   type: String,
                   required: true,
                   trim: true,
@@ -56,14 +56,18 @@ const aboutSchema = new Schema(
                   maxlength: 500,
                   default: "We are a team of professionals who will help you grow your business.",
             },
-            whyWeImage: { // quantity of image is 1
-                  type: String,
-                  required: true,
-                  match: [
-                        /^https?:\/\/[^\s]+$/,
-                        "Invalid URL format for image",
-                  ],
+            whyWeImage: {
+                  type: Object, // Ensures the field is an object
+                  required: true, // The field is mandatory
+                  // validate: {
+                  //       validator: function (value) {
+                  //             // Check if the `imageUrl` key exists and is a valid URL
+                  //             return /^https?:\/\/[^\s]+$/.test(value?.imageUrl);
+                  //       },
+                  //       message: "Invalid URL format for image",
+                  // },
             },
+
             benefits: [
                   {
                         title: {

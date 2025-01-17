@@ -25,6 +25,12 @@ const createContact = asyncHandler(async (req, res, next) => {
             throw new apiErrorHandler(400, "Email or Phone is required.");
       }
 
+      const contactExists = await Contact.find();
+
+      if (contactExists.length > 0) {
+            throw new apiErrorHandler(409, "Contact entry already exists.");
+      }
+
       try {
             // Create the contact entry with trimmed fields
             const contact = await Contact.create({

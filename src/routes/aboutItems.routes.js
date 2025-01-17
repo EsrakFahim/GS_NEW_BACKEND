@@ -18,7 +18,7 @@ router.route("/").post(
 );
 
 // Route for updating an existing project with file uploads
-router.route("/").put(
+router.route("/update").put(
       upload.fields([
             {
                   name: "images",
