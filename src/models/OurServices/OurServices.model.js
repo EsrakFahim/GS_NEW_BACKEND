@@ -1,6 +1,30 @@
 import mongoose, { Schema } from "mongoose";
 import slugify from "slugify"; // Assume slugify for generating SEO-friendly slugs
 
+
+// Define a sub document schema for files
+const FileSchema = new Schema(
+      {
+            url: {
+                  type: String,
+                  required: [true, "File URL is required"],
+                  match: [/^https?:\/\/[^\s]+$/, "Invalid URL format"],
+            },
+            name: {
+                  type: String,
+                  // required: [true, "File name is required"],
+                  trim: true,
+                  maxlength: 100,
+            },
+      },
+      {
+            _id: false,
+      },
+      {
+            timestamps: true,
+      }
+);
+
 const ourServicesSchema = new Schema(
       {
             title: {
@@ -13,7 +37,7 @@ const ourServicesSchema = new Schema(
             slug: {
                   type: String,
                   unique: true,
-                  required: true,
+                  // required: true,
                   index: true, // SEO-friendly unique identifier
             },
             subTitle: {
@@ -36,12 +60,8 @@ const ourServicesSchema = new Schema(
                   ],
             },
             showcaseImages: {
-                  type: [String],
+                  type: [FileSchema],
                   default: [],
-                  validate: {
-                        validator: (arr) => arr.length <= 5,
-                        message: "Showcase images cannot exceed 5 items",
-                  },
             },
             serviceType: {
                   type: String,

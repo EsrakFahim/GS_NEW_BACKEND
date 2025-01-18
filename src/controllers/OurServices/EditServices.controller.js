@@ -1,14 +1,14 @@
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { apiResponse } from "../../utils/apiResponse.js";
 import { apiErrorHandler } from "../../utils/apiErrorHandler.js";
-import { uploadFileCloudinary } from "../../FileHandler/Upload.js";
 import { OurServices } from "../../models/OurServices/OurServices.model.js";
 
 const EditServices = asyncHandler(async (req, res, next) => {
       try {
+            const id = req.params.id;
+
             // Destructure fields from request body
             const {
-                  _id,
                   title,
                   subtitle,
                   description,
@@ -16,18 +16,18 @@ const EditServices = asyncHandler(async (req, res, next) => {
                   status,
                   includingServices,
                   isFeatured,
+                  showcaseImages,
+                  coverImage
             } = req.body;
 
-            // Get uploaded files
-            const { coverImage, showcaseImages } = req.files;
 
             // Ensure service ID is provided
-            if (!_id) {
+            if (!id) {
                   throw new apiErrorHandler(res, 400, "Service ID is required");
             }
 
             // Check if the service with the given ID exists
-            const existingService = await OurServices.findById(_id);
+            const existingService = await OurServices.findById(id);
 
             if (!existingService) {
                   throw new apiErrorHandler(res, 404, "Service not found");
@@ -48,26 +48,16 @@ const EditServices = asyncHandler(async (req, res, next) => {
 
             // Process image uploads if provided
             if (coverImage) {
-                  const coverImagePath = coverImage[0].path;
-                  const uploadedCoverImage =
-                        await uploadFileCloudinary(coverImagePath);
-                  if (uploadedCoverImage) {
-                        updates.coverImage = uploadedCoverImage.url;
-                  }
+                  updates.coverImage = coverImage;
             }
 
             if (showcaseImages) {
-                  const showcaseImagesPath = showcaseImages[0].path;
-                  const uploadedShowcaseImages =
-                        await uploadFileCloudinary(showcaseImagesPath);
-                  if (uploadedShowcaseImages) {
-                        updates.showcaseImages = uploadedShowcaseImages.url;
-                  }
+                  updates.showcaseImages = showcaseImages;
             }
 
             // Update the service in the database
             const updatedService = await OurServices.findByIdAndUpdate(
-                  _id,
+                  id,
                   { $set: updates },
                   { new: true, useFindAndModify: false } // Return the updated document
             );

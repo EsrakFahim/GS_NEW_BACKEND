@@ -1,97 +1,83 @@
 import { asyncHandler } from "../../utils/asyncHandler.js";
 import { apiResponse } from "../../utils/apiResponse.js";
 import { apiErrorHandler } from "../../utils/apiErrorHandler.js";
-import { uploadFileCloudinary } from "../../FileHandler/Upload.js";
 import { OurServices } from "../../models/OurServices/OurServices.model.js";
 
 const CreateServices = asyncHandler(async (req, res, next) => {
       try {
-            // Get all services
-            const {
+            // Destructure fields from the request body
+            let {
                   title,
-                  subtitle,
+                  subtitle, // Coming from frontend
                   description,
                   serviceType,
                   status,
                   includingServices,
                   isFeatured,
+                  showcaseImages,
+                  coverImage,
             } = req.body;
 
-            // Get all images
-            const { coverImage, showcaseImages } = req.files;
+            // Map subtitle to subTitle for schema compatibility
+            const subTitle = subtitle;
 
-            // Check if required fields are provided
+            // Validate required fields
             if (
                   !title ||
-                  !subtitle ||
+                  !subTitle ||
                   !description ||
                   !serviceType ||
                   !status ||
                   !includingServices ||
                   isFeatured === undefined
             ) {
-                  throw new apiErrorHandler(
-                        res,
-                        400,
-                        "Please provide all required fields"
+                  return next(
+                        new apiErrorHandler(res, 400, "Please provide all required fields")
                   );
             }
 
-            // Check if required images are provided
-            if (!coverImage || !showcaseImages) {
-                  throw new apiErrorHandler(
-                        res,
-                        400,
-                        "Please provide all required images"
+            // Validate images
+            if (!coverImage || !Array.isArray(showcaseImages) || showcaseImages.length === 0) {
+                  return next(
+                        new apiErrorHandler(
+                              res,
+                              400,
+                              "Please provide a cover image and at least one showcase image"
+                        )
                   );
             }
 
-            // Check if service with the same title already exists
-            const existingService = await OurServices.findOne({ title });
-            if (existingService) {
-                  throw new apiErrorHandler(res, 400, "Service already exists");
-            }
-
-            // Upload images to Cloudinary
-            const uploadedCoverImage = await uploadFileCloudinary(
-                  coverImage[0].path
-            );
-            const uploadedShowcaseImages = await uploadFileCloudinary(
-                  showcaseImages[0].path
-            );
-
-            if (!uploadedCoverImage || !uploadedShowcaseImages) {
-                  throw new apiErrorHandler(res, 500, "Error uploading images");
-            }
-
-            // Create the new service
-            const service = await OurServices.create({
+            // Prepare the service object
+            const serviceData = {
                   title,
-                  subtitle,
+                  subTitle, // Mapped field
                   description,
-                  coverImage: uploadedCoverImage.url,
-                  showcaseImages: uploadedShowcaseImages.url,
                   serviceType,
                   status,
                   includingServices,
                   isFeatured,
-            });
+                  showcaseImages,
+                  coverImage,
+            };
+
+            // Attempt to create the service in the database
+            const service = await OurServices.create(serviceData);
 
             if (!service) {
-                  throw new apiErrorHandler(res, 500, "Error creating service");
+                  return next(
+                        new apiErrorHandler(res, 500, "Failed to create the service")
+                  );
             }
 
+            // Return success response
             return res
                   .status(201)
                   .json(
-                        new apiResponse(
-                              201,
-                              "Service created successfully",
-                              service
-                        )
+                        new apiResponse(201, "Service created successfully", service)
                   );
       } catch (error) {
-            throw new apiErrorHandler(res, 500, "Server error");
+            console.error("Error in CreateServices controller:", error); // Log error for debugging
+            return next(new apiErrorHandler(res, 500, "Server error"));
       }
 });
 

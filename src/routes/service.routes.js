@@ -21,7 +21,7 @@ router.route("/upload").post(
       ]),
       CreateServices
 );
-router.route("/update").put(
+router.route("/update/:id").put(
       upload.fields([
             {
                   name: "coverImage",
@@ -36,6 +36,6 @@ router.route("/update").put(
 );
 router.route("/delete/:id").delete(DeleteService);
 router.route("/").get(GetAllServices);
-router.route("/:slug").get(getSingleService);
+router.route("/:id").get(getSingleService);
 
 export default router;
