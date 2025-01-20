@@ -6,6 +6,8 @@ import { TeamMember } from "../../models/TeamMember/TeamMember.model.js";
 const removeTeamMember = asyncHandler(async (req, res) => {
       const { id } = req.params;
 
+      console.log("Received ID:", id);
+
       if (!id) {
             throw new apiErrorHandler(res, 400, "Team member ID is required");
       }
@@ -13,6 +15,7 @@ const removeTeamMember = asyncHandler(async (req, res) => {
 
       try {
             const existingTeamMember = await TeamMember.findById(id);
+            console.log("Existing team member:", existingTeamMember);
 
             if (!existingTeamMember) {
                   throw new apiErrorHandler(
